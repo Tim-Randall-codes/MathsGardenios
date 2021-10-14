@@ -8,21 +8,78 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewRouter: ViewRouter
     var body: some View {
         ZStack{
-            Background()
+            Background().edgesIgnoringSafeArea([.all])
             VStack{
-                Title(words: "Title test")
-                Text("Hello, world!")
-                    .padding()
-                ButtonWidget(words: "test")
+                Spacer()
+                Title(words: "Maths Garden").padding()
+                Spacer()
+                Image("garden").resizable()
+                    .frame(width: 200, height: 200)
+                Spacer()
+                Button(action:{
+                    viewRouter.currentPage = 2
+                }, label:{
+                    ButtonWidget(words: "test")
+                })
+                Spacer()
+            }
         }
+    }
+}
+
+struct ContentView2: View {
+    @StateObject var viewRouter: ViewRouter
+    var body: some View {
+        ZStack{
+            Background().edgesIgnoringSafeArea([.all])
+            VStack{
+                Text("Hello world")
+            }
+        }
+    }
+}
+
+struct ContentView3: View {
+    @StateObject var viewRouter: ViewRouter
+    var body: some View {
+        ZStack{
+            Background().edgesIgnoringSafeArea([.all])
+            VStack{
+                Text("Hello world")
+            }
+        }
+    }
+}
+
+struct ContentView4: View {
+    @StateObject var viewRouter: ViewRouter
+    var body: some View {
+        ZStack{
+            Background().edgesIgnoringSafeArea([.all])
+            VStack{
+                Text("Hello world")
+            }
+        }
+    }
+}
+
+struct ContentView5: View {
+    @StateObject var viewRouter: ViewRouter
+    var body: some View {
+        ZStack{
+            Background().edgesIgnoringSafeArea([.all])
+            VStack{
+                Text("Hello world")
+            }
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(viewRouter: ViewRouter())
     }
 }

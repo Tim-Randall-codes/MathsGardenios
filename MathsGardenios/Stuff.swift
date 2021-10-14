@@ -22,7 +22,7 @@ struct ButtonWidget: View {
 
 struct Background: View {
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [.white, .white, .green]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(gradient: Gradient(colors: [.white, .white, .green]), startPoint: .topLeading, endPoint: .bottomTrailing)
     }
 }
 
@@ -31,4 +31,8 @@ struct Title: View {
     var body: some View {
         Text(words).font(.system(size: 24, weight: .bold))
     }
+}
+
+class ViewRouter: ObservableObject {
+    @Published var currentPage: Int = 1
 }
