@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct MotherView: View {
     @ObservedObject var viewRouter: ViewRouter
@@ -16,7 +17,7 @@ struct MotherView: View {
         else if viewRouter.currentPage == 2 {
             ContentView2(viewRouter: viewRouter)
         }
-        else viewRouter.currentPage == 3 {
+        else if viewRouter.currentPage == 3 {
             ContentView3(viewRouter: viewRouter)
         }
         else if viewRouter.currentPage == 4 {
@@ -24,6 +25,12 @@ struct MotherView: View {
         }
         else if viewRouter.currentPage == 5 {
             ContentView5(viewRouter: viewRouter)
+        }
+        else if viewRouter.currentPage == 6 {
+            ContentView6(viewRouter: viewRouter)
+        }
+        else if viewRouter.currentPage == 7 {
+            ContentView7(viewRouter: viewRouter)
         }
     }
 }

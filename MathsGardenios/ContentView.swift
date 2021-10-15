@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ContentView: View {
     @StateObject var viewRouter: ViewRouter
@@ -67,6 +68,32 @@ struct ContentView4: View {
 }
 
 struct ContentView5: View {
+    @StateObject var viewRouter: ViewRouter
+    var body: some View {
+        ZStack{
+            Background().edgesIgnoringSafeArea([.all])
+            VStack{
+                Text("Hello world")
+            }
+        }
+    }
+}
+
+struct ContentView6: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @StateObject var viewRouter: ViewRouter
+    var body: some View {
+        ZStack{
+            Background().edgesIgnoringSafeArea([.all])
+            VStack{
+                Text("Hello world")
+            }
+        }
+    }
+}
+
+struct ContentView7: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
     @StateObject var viewRouter: ViewRouter
     var body: some View {
         ZStack{
