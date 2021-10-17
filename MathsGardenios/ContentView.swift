@@ -37,6 +37,8 @@ struct ContentView2: View {
     @StateObject var numOne: IntOO
     @StateObject var numTwo: IntOO
     @StateObject var problemType: IntOO
+    @StateObject var digits: Int2OO
+    @StateObject var questionChar: StringOO
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
@@ -46,30 +48,35 @@ struct ContentView2: View {
                 Button(action:{
                     viewRouter.currentPage = 3
                     gameMode.num = 1
+                    startNewGame()
                 }, label:{
                     TextWidget(words: "Addition")
                 })
                 Button(action:{
                     viewRouter.currentPage = 3
                     gameMode.num = 2
+                    startNewGame()
                 }, label:{
                     TextWidget(words: "Addition and subtraction")
                 })
                 Button(action:{
                     viewRouter.currentPage = 3
                     gameMode.num = 3
+                    startNewGame()
                 }, label:{
                     TextWidget(words: "Addition, subtraction, multiplication")
                 })
                 Button(action:{
                     viewRouter.currentPage = 3
                     gameMode.num = 4
+                    startNewGame()
                 }, label:{
                     TextWidget(words: "Addition, subtraction, multiplication, division")
                 })
                 Spacer()
                 Button(action:{
-                    viewRouter.currentPage = 4
+                    digits.num = 1
+                    viewRouter.currentPage = 5
                 }, label:{
                     TextWidget(words: "Select difficulty")
                 })
@@ -81,23 +88,107 @@ struct ContentView2: View {
             }
         }
     }
+    func startNewGame(){
+        // generate numbers
+        if digits.num == 1 {
+            numOne.num = Int.random(in: 1..<10)
+            numTwo.num = Int.random(in: 1..<10)
+        }
+        else if digits.num == 2 {
+            numOne.num = Int.random(in: 1..<100)
+            numTwo.num = Int.random(in: 1..<100)
+        }
+        else if digits.num == 3 {
+            numOne.num = Int.random(in: 1..<1000)
+            numTwo.num = Int.random(in: 1..<1000)
+        }
+        // generate random symbol eg plus
+        if gameMode.num == 1 {
+            problemType.num = 0
+        }
+        else if gameMode.num == 2 {
+            problemType.num = Int.random(in: 0...1)
+        }
+        else if gameMode.num == 3 {
+            problemType.num = Int.random(in: 0...2)
+        }
+        else if gameMode.num == 4 {
+            problemType.num = Int.random(in: 0...3)
+        }
+        // make question's character
+        if problemType.num == 0 {
+            questionChar.words = "+"
+        }
+        else if problemType.num == 1 {
+            questionChar.words = "-"
+        }
+        else if problemType.num == 2 {
+            questionChar.words = "x"
+        }
+        else if problemType.num == 3 {
+            questionChar.words = "/"
+        }
+    }
 }
 
 struct ContentView3: View {
     @StateObject var viewRouter: ViewRouter
     @StateObject var gameMode: IntOO
-    @ObservedObject var digits: IntOO
+    @ObservedObject var digits: Int2OO
     @StateObject var correct: IntOO
     @StateObject var incorrect: IntOO
     @StateObject var numOne: IntOO
     @StateObject var numTwo: IntOO
     @StateObject var problemType: IntOO
+    @StateObject var questionChar: StringOO
+    @State var userEntry: Int = 0
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
             VStack{
-                Text("Hello world")
+                TextWidget(words: "\(numOne.num) \(questionChar.words) \(numTwo.num) =")
             }
+        }
+    }
+    func startNewGame(){
+        // generate numbers
+        if digits.num == 1 {
+            numOne.num = Int.random(in: 1..<10)
+            numTwo.num = Int.random(in: 1..<10)
+        }
+        else if digits.num == 2 {
+            numOne.num = Int.random(in: 1..<100)
+            numTwo.num = Int.random(in: 1..<100)
+        }
+        else if digits.num == 3 {
+            numOne.num = Int.random(in: 1..<1000)
+            numTwo.num = Int.random(in: 1..<1000)
+        }
+        // generate random symbol eg plus
+        if gameMode.num == 1 {
+            problemType.num = 0
+        }
+        else if gameMode.num == 2 {
+            problemType.num = Int.random(in: 0...1)
+        }
+        else if gameMode.num == 3 {
+            problemType.num = Int.random(in: 0...2)
+        }
+        else if gameMode.num == 4 {
+            problemType.num = Int.random(in: 0...3)
+        }
+        // make question's character
+        if problemType.num == 0 {
+            questionChar.words = "+"
+        }
+        else if problemType.num == 1 {
+            questionChar.words = "-"
+        }
+        else if problemType.num == 2 {
+            questionChar.words = "x"
+        }
+        else if problemType.num == 3 {
+            questionChar.words = "/"
         }
     }
 }
@@ -118,12 +209,49 @@ struct ContentView4: View {
 
 struct ContentView5: View {
     @StateObject var viewRouter: ViewRouter
-    @StateObject var digits: IntOO
+    @StateObject var digits: Int2OO
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
             VStack{
-                Text("Hello world")
+                Title(words: "Select Difficulty")
+                Spacer()
+                Button(action:{
+                    digits.num = 1
+                }, label:{
+                    if digits.num == 1 {
+                        ButtonWidgetYellow(words: "One digit")
+                    }
+                    else {
+                        ButtonWidget(words: "One digit")
+                    }
+                })
+                Button(action:{
+                    digits.num = 2
+                }, label:{
+                    if digits.num == 2 {
+                        ButtonWidgetYellow(words: "Two digits")
+                    }
+                    else {
+                        ButtonWidget(words: "Two digits")
+                    }
+                })
+                Button(action:{
+                    digits.num = 3
+                }, label:{
+                    if digits.num == 3 {
+                        ButtonWidgetYellow(words: "Three digits")
+                    }
+                    else {
+                        ButtonWidget(words: "Three digits")
+                    }
+                })
+                Spacer()
+                Button(action:{
+                    viewRouter.currentPage = 1
+                }, label:{
+                    ButtonWidget(words: "Back")
+                })
             }
         }
     }

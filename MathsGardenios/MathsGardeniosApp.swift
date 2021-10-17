@@ -15,13 +15,14 @@ struct MathsGardeniosApp: App {
     @StateObject var correct = IntOO()
     @StateObject var incorrect = IntOO()
     @StateObject var gameMode = IntOO()
-    @StateObject var digits = IntOO()
+    @StateObject var digits = Int2OO()
     @StateObject var numOne = IntOO()
     @StateObject var numTwo = IntOO()
     @StateObject var problemType = IntOO()
+    @StateObject var questionChar = StringOO()
     var body: some Scene {
         WindowGroup {
-            MotherView(viewRouter: viewRouter, correct: correct, incorrect: incorrect, gameMode: gameMode, digits: digits, numOne: numOne, numTwo: numTwo, problemType: problemType).environment(\.managedObjectContext, persistenceController.container.viewContext)
+            MotherView(viewRouter: viewRouter, correct: correct, incorrect: incorrect, gameMode: gameMode, digits: digits, numOne: numOne, numTwo: numTwo, problemType: problemType, questionChar: questionChar).environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }
