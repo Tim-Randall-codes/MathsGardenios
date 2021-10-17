@@ -36,3 +36,17 @@ struct Title: View {
 class ViewRouter: ObservableObject {
     @Published var currentPage: Int = 1
 }
+
+struct TextWidget: View {
+    var words: String
+    var body: some View {
+        Text(words)
+            .font(.system(size: 18, weight: .light))
+            .foregroundColor(.black)
+            .padding()
+    }
+}
+
+class IntOO: ObservableObject {
+    @Published var num: Int = 0
+}
