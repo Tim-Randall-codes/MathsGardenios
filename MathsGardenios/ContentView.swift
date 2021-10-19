@@ -23,7 +23,7 @@ struct ContentView: View {
                 Button(action:{
                     viewRouter.currentPage = 2
                 }, label:{
-                    ButtonWidget(words: "test")
+                    ButtonWidget(words: "Start")
                 })
                 Spacer()
             }
@@ -141,13 +141,29 @@ struct ContentView3: View {
     @StateObject var numTwo: IntOO
     @StateObject var problemType: IntOO
     @StateObject var questionChar: StringOO
+    @State var userInputString: String = ""
     @State var userEntry: Int = 0
+    @State var displayMessage: String = ""
+    @State var letInputThrough: Bool = false
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
             VStack{
+                TextWidget(words: "Correct: \(String(correct.num)) Incorrect: \(String(incorrect.num))")
                 TextWidget(words: "\(numOne.num) \(questionChar.words) \(numTwo.num) =")
+                TextWidget(words: displayMessage)
+                TextField("put answer here", text: $userInputString)
+                Button(action:{
+                    checkInput()
+                    if letInputThrough == true {
+                        game()
+                        startNewGame()
+                    }
+                }, label:{
+                    ButtonWidget(words: "Answer")
+                })
             }
+            .keyboardType(.numberPad)
         }
     }
     func startNewGame(){
@@ -189,6 +205,58 @@ struct ContentView3: View {
         }
         else if problemType.num == 3 {
             questionChar.words = "/"
+        }
+        userInputString = ""
+    }
+    func checkInput () {
+        if let testInt = Int(userInputString) {
+            userEntry = testInt
+            letInputThrough = true
+        }
+        else {
+            displayMessage = "Please enter only numbers"
+            letInputThrough = false
+        }
+        if userInputString == "" {
+            displayMessage = "Please enter an answer"
+            letInputThrough = false
+        }
+        else {
+            letInputThrough = true
+        }
+    }
+    func game(){
+        if problemType.num == 0 {
+            if userEntry == numOne.num + numTwo.num {
+                correct.num += 1
+            }
+            else {
+                incorrect.num += 1
+            }
+        }
+        else if problemType.num == 1 {
+            if userEntry == numOne.num - numTwo.num {
+                correct.num += 1
+            }
+            else {
+                incorrect.num += 1
+            }
+        }
+        else if problemType.num == 2 {
+            if userEntry == numOne.num * numTwo.num {
+                correct.num += 1
+            }
+            else {
+                incorrect.num += 1
+            }
+        }
+        else {
+            if userEntry == numOne.num / numTwo.num {
+                correct.num += 1
+            }
+            else {
+                incorrect.num += 1
+            }
         }
     }
 }
