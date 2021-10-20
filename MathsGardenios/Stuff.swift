@@ -70,3 +70,11 @@ class StringOO: ObservableObject {
 class Int2OO: ObservableObject {
     @Published var num: Int = 1
 }
+
+class SecondsOO: ObservableObject {
+    @Published var num: Int = 60
+}
+
+class BoolOO: ObservableObject {
+    @Published var boo: Bool = false
+}

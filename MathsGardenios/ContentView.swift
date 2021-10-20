@@ -39,6 +39,8 @@ struct ContentView2: View {
     @StateObject var problemType: IntOO
     @StateObject var digits: Int2OO
     @StateObject var questionChar: StringOO
+    @StateObject var seconds: SecondsOO
+    @StateObject var pause: BoolOO
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
@@ -49,6 +51,7 @@ struct ContentView2: View {
                     viewRouter.currentPage = 3
                     gameMode.num = 1
                     startNewGame()
+                    countDown()
                 }, label:{
                     TextWidget(words: "Addition")
                 })
@@ -129,6 +132,18 @@ struct ContentView2: View {
             questionChar.words = "/"
         }
     }
+    func countDown(){
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            seconds.num -= 1
+            if seconds.num == 0 {
+                timer.invalidate()
+                viewRouter.currentPage = 4
+            }
+            if pause.boo == true {
+                timer.invalidate()
+            }
+        }
+    }
 }
 
 struct ContentView3: View {
@@ -141,6 +156,8 @@ struct ContentView3: View {
     @StateObject var numTwo: IntOO
     @StateObject var problemType: IntOO
     @StateObject var questionChar: StringOO
+    @StateObject var seconds: SecondsOO
+    @StateObject var pause: BoolOO
     @State var userInputString: String = ""
     @State var userEntry: Int = 0
     @State var displayMessage: String = ""
@@ -150,6 +167,20 @@ struct ContentView3: View {
             Background().edgesIgnoringSafeArea([.all])
             VStack{
                 TextWidget(words: "Correct: \(String(correct.num)) Incorrect: \(String(incorrect.num))")
+                HStack{
+                    TextWidget(words: "\(String(seconds.num))")
+                    Button(action:{
+                        if pause.boo == false {
+                            pause.boo = true
+                        }
+                        else {
+                            pause.boo = false
+                        }
+                        countDown()
+                    }, label:{
+                        TextWidget(words: "Pause")
+                    })
+                }
                 TextWidget(words: "\(numOne.num) \(questionChar.words) \(numTwo.num) =")
                 TextWidget(words: displayMessage)
                 TextField("put answer here", text: $userInputString)
@@ -164,6 +195,18 @@ struct ContentView3: View {
                 })
             }
             .keyboardType(.numberPad)
+        }
+    }
+    func countDown(){
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            seconds.num -= 1
+            if seconds.num == 0 {
+                timer.invalidate()
+                viewRouter.currentPage = 4
+            }
+            if pause.boo == true {
+                timer.invalidate()
+            }
         }
     }
     func startNewGame(){
@@ -269,7 +312,7 @@ struct ContentView4: View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
             VStack{
-                Text("Hello world")
+                TextWidget(words: "You got \(correct.num) correct and \(incorrect.num) incorrect")
             }
         }
     }
