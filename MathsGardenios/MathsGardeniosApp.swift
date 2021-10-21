@@ -22,9 +22,10 @@ struct MathsGardeniosApp: App {
     @StateObject var questionChar = StringOO()
     @StateObject var seconds = SecondsOO()
     @StateObject var pause = BoolOO()
+    @StateObject var accuracy = IntOO()
     var body: some Scene {
         WindowGroup {
-            MotherView(viewRouter: viewRouter, correct: correct, incorrect: incorrect, gameMode: gameMode, digits: digits, numOne: numOne, numTwo: numTwo, problemType: problemType, questionChar: questionChar, seconds: seconds, pause: pause).environment(\.managedObjectContext, persistenceController.container.viewContext)
+            MotherView(viewRouter: viewRouter, correct: correct, incorrect: incorrect, gameMode: gameMode, digits: digits, numOne: numOne, numTwo: numTwo, problemType: problemType, questionChar: questionChar, seconds: seconds, pause: pause, accuracy: accuracy).environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

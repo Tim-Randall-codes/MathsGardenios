@@ -41,6 +41,9 @@ struct ContentView2: View {
     @StateObject var questionChar: StringOO
     @StateObject var seconds: SecondsOO
     @StateObject var pause: BoolOO
+    @StateObject var correct: IntOO
+    @StateObject var incorrect: IntOO
+    @StateObject var accuracy: IntOO
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
@@ -50,6 +53,7 @@ struct ContentView2: View {
                 Button(action:{
                     viewRouter.currentPage = 3
                     gameMode.num = 1
+                    resetVariables()
                     startNewGame()
                     countDown()
                 }, label:{
@@ -58,21 +62,27 @@ struct ContentView2: View {
                 Button(action:{
                     viewRouter.currentPage = 3
                     gameMode.num = 2
+                    resetVariables()
                     startNewGame()
+                    countDown()
                 }, label:{
                     TextWidget(words: "Addition and subtraction")
                 })
                 Button(action:{
                     viewRouter.currentPage = 3
                     gameMode.num = 3
+                    resetVariables()
                     startNewGame()
+                    countDown()
                 }, label:{
                     TextWidget(words: "Addition, subtraction, multiplication")
                 })
                 Button(action:{
                     viewRouter.currentPage = 3
                     gameMode.num = 4
+                    resetVariables()
                     startNewGame()
+                    countDown()
                 }, label:{
                     TextWidget(words: "Addition, subtraction, multiplication, division")
                 })
@@ -90,6 +100,13 @@ struct ContentView2: View {
                 })
             }
         }
+    }
+    func resetVariables(){
+        seconds.num = 60
+        pause.boo = false
+        correct.num = 0
+        incorrect.num = 0
+        accuracy.num2 = 0
     }
     func startNewGame(){
         // generate numbers
@@ -124,6 +141,7 @@ struct ContentView2: View {
         }
         else if problemType.num == 1 {
             questionChar.words = "-"
+            numTwo.num = Int.random(in: 1...numOne.num)
         }
         else if problemType.num == 2 {
             questionChar.words = "x"
@@ -137,6 +155,7 @@ struct ContentView2: View {
             seconds.num -= 1
             if seconds.num == 0 {
                 timer.invalidate()
+                accuracy.num2 = Float(correct.num) / Float((correct.num + incorrect.num)) * 100
                 viewRouter.currentPage = 4
             }
             if pause.boo == true {
@@ -158,6 +177,7 @@ struct ContentView3: View {
     @StateObject var questionChar: StringOO
     @StateObject var seconds: SecondsOO
     @StateObject var pause: BoolOO
+    @StateObject var accuracy: IntOO
     @State var userInputString: String = ""
     @State var userEntry: Int = 0
     @State var displayMessage: String = ""
@@ -202,6 +222,7 @@ struct ContentView3: View {
             seconds.num -= 1
             if seconds.num == 0 {
                 timer.invalidate()
+                accuracy.num2 = Float(correct.num) / Float((correct.num + incorrect.num)) * 100
                 viewRouter.currentPage = 4
             }
             if pause.boo == true {
@@ -242,6 +263,7 @@ struct ContentView3: View {
         }
         else if problemType.num == 1 {
             questionChar.words = "-"
+            numTwo.num = Int.random(in: 1...numOne.num)
         }
         else if problemType.num == 2 {
             questionChar.words = "x"
@@ -308,11 +330,21 @@ struct ContentView4: View {
     @StateObject var viewRouter: ViewRouter
     @ObservedObject var correct: IntOO
     @ObservedObject var incorrect: IntOO
+    @ObservedObject var accuracy: IntOO
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
             VStack{
-                TextWidget(words: "You got \(correct.num) correct and \(incorrect.num) incorrect")
+                Title(words: "Results")
+                Spacer()
+                TextWidget(words: "You got \(correct.num) correct and \(incorrect.num) incorrect!!")
+                TextWidget(words: "You got \(String(accuracy.num2))% accuracy!!")
+                Spacer()
+                Button(action:{
+                    viewRouter.currentPage = 2
+                }, label:{
+                    ButtonWidget(words: "Back to main menu")
+                })
             }
         }
     }
@@ -359,7 +391,7 @@ struct ContentView5: View {
                 })
                 Spacer()
                 Button(action:{
-                    viewRouter.currentPage = 1
+                    viewRouter.currentPage = 2
                 }, label:{
                     ButtonWidget(words: "Back")
                 })
@@ -373,6 +405,7 @@ struct ContentView6: View {
     @StateObject var viewRouter: ViewRouter
     @ObservedObject var correct: IntOO
     @ObservedObject var incorrect: IntOO
+    @ObservedObject var accuracy: IntOO
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])

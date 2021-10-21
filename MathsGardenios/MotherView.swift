@@ -20,24 +20,25 @@ struct MotherView: View {
     @ObservedObject var questionChar: StringOO
     @ObservedObject var seconds: SecondsOO
     @ObservedObject var pause: BoolOO
+    @ObservedObject var accuracy: IntOO
     var body: some View {
         if viewRouter.currentPage == 1 {
             ContentView(viewRouter: viewRouter)
         }
         else if viewRouter.currentPage == 2 {
-            ContentView2(viewRouter: viewRouter, gameMode: gameMode, numOne: numOne, numTwo: numTwo, problemType: problemType, digits: digits, questionChar: questionChar, seconds: seconds, pause: pause)
+            ContentView2(viewRouter: viewRouter, gameMode: gameMode, numOne: numOne, numTwo: numTwo, problemType: problemType, digits: digits, questionChar: questionChar, seconds: seconds, pause: pause, correct: correct, incorrect: incorrect, accuracy: accuracy)
         }
         else if viewRouter.currentPage == 3 {
-            ContentView3(viewRouter: viewRouter, gameMode: gameMode, digits: digits, correct: correct, incorrect: incorrect, numOne: numOne, numTwo: numTwo, problemType: problemType, questionChar: questionChar, seconds: seconds, pause: pause)
+            ContentView3(viewRouter: viewRouter, gameMode: gameMode, digits: digits, correct: correct, incorrect: incorrect, numOne: numOne, numTwo: numTwo, problemType: problemType, questionChar: questionChar, seconds: seconds, pause: pause, accuracy: accuracy)
         }
         else if viewRouter.currentPage == 4 {
-            ContentView4(viewRouter: viewRouter, correct: correct, incorrect: incorrect)
+            ContentView4(viewRouter: viewRouter, correct: correct, incorrect: incorrect, accuracy: accuracy)
         }
         else if viewRouter.currentPage == 5 {
             ContentView5(viewRouter: viewRouter, digits: digits)
         }
         else if viewRouter.currentPage == 6 {
-            ContentView6(viewRouter: viewRouter, correct: correct, incorrect: incorrect)
+            ContentView6(viewRouter: viewRouter, correct: correct, incorrect: incorrect, accuracy: accuracy)
         }
         else if viewRouter.currentPage == 7 {
             ContentView7(viewRouter: viewRouter)
@@ -47,6 +48,6 @@ struct MotherView: View {
 
 struct MotherView_Previews: PreviewProvider {
     static var previews: some View {
-        MotherView(viewRouter: ViewRouter(), correct: IntOO(), incorrect: IntOO(), gameMode: IntOO(), digits: Int2OO(), numOne: IntOO(), numTwo: IntOO(), problemType: IntOO(), questionChar: StringOO(), seconds: SecondsOO(), pause: BoolOO())
+        MotherView(viewRouter: ViewRouter(), correct: IntOO(), incorrect: IntOO(), gameMode: IntOO(), digits: Int2OO(), numOne: IntOO(), numTwo: IntOO(), problemType: IntOO(), questionChar: StringOO(), seconds: SecondsOO(), pause: BoolOO(), accuracy: IntOO())
     }
 }

@@ -61,6 +61,7 @@ struct TextWidget: View {
 
 class IntOO: ObservableObject {
     @Published var num: Int = 0
+    @Published var num2: Float = 0
 }
 
 class StringOO: ObservableObject {
@@ -78,3 +79,4 @@ class SecondsOO: ObservableObject {
 class BoolOO: ObservableObject {
     @Published var boo: Bool = false
 }
+
