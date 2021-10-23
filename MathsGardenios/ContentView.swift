@@ -511,6 +511,7 @@ struct ContentView6: View {
                     item.name = nameString
                     item.score = Int64(correct.num)
                     viewRouter.currentPage = 2
+                    PersistenceController.shared.save()
                 }, label: {
                     ButtonWidget(words: "OK")
                 })
