@@ -148,6 +148,7 @@ struct ContentView2: View {
         }
         else if problemType.num == 3 {
             questionChar.words = "/"
+            numTwo.num = Int.random(in: 1...12)
         }
     }
     func countDown(){
@@ -180,6 +181,8 @@ struct ContentView3: View {
     @StateObject var accuracy: IntOO
     @State var userInputString: String = ""
     @State var userEntry: Int = 0
+    @State var userInputStringRemainder: String = ""
+    @State var userEntryRemainder: Int = 0
     @State var displayMessage: String = ""
     @State var letInputThrough: Bool = false
     var body: some View {
@@ -204,6 +207,9 @@ struct ContentView3: View {
                 TextWidget(words: "\(numOne.num) \(questionChar.words) \(numTwo.num) =")
                 TextWidget(words: displayMessage)
                 TextField("put answer here", text: $userInputString)
+                if problemType.num == 3 {
+                    TextField("put remainder here", text: $userInputStringRemainder)
+                }
                 Button(action:{
                     checkInput()
                     if letInputThrough == true {
@@ -270,8 +276,16 @@ struct ContentView3: View {
         }
         else if problemType.num == 3 {
             questionChar.words = "/"
+            if digits.num == 1 || digits.num == 2 {
+                numOne.num = Int.random(in: 12...100)
+            }
+            else if digits.num == 3 {
+                numOne.num = Int.random(in: 12..<1000)
+            }
+            numTwo.num = Int.random(in: 1...12)
         }
         userInputString = ""
+        userInputStringRemainder = ""
     }
     func checkInput () {
         if let testInt = Int(userInputString) {
@@ -288,6 +302,23 @@ struct ContentView3: View {
         }
         else {
             letInputThrough = true
+        }
+        if problemType.num == 3 {
+            if let remainderTestInt = Int(userInputStringRemainder) {
+                userEntryRemainder = remainderTestInt
+                letInputThrough = true
+            }
+            else {
+                displayMessage = "Please enter only numbers"
+                letInputThrough = false
+            }
+            if userInputStringRemainder == "" {
+                displayMessage = "Please enter an answer"
+                letInputThrough = false
+            }
+            else {
+                letInputThrough = true
+            }
         }
     }
     func game(){
@@ -316,7 +347,7 @@ struct ContentView3: View {
             }
         }
         else {
-            if userEntry == numOne.num / numTwo.num {
+            if userEntry == numOne.num / numTwo.num && userEntryRemainder == numOne.num % numTwo.num {
                 correct.num += 1
             }
             else {
