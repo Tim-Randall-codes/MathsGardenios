@@ -62,6 +62,7 @@ struct TextWidget: View {
 class IntOO: ObservableObject {
     @Published var num: Int = 0
     @Published var num2: Float = 0
+    @Published var boo: Bool = false
 }
 
 class StringOO: ObservableObject {
@@ -80,3 +81,8 @@ class BoolOO: ObservableObject {
     @Published var boo: Bool = false
 }
 
+let dummy1 = Player()
+let dummy2 = Player()
+let dummy3 = Player()
+let dummy4 = Player()
+let dummy5 = Player()

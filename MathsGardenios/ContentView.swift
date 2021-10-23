@@ -32,6 +32,11 @@ struct ContentView: View {
 }
 
 struct ContentView2: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(
+        entity: Player.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Player.score, ascending: false)]
+    )var items: FetchedResults<Player>
     @StateObject var viewRouter: ViewRouter
     @StateObject var gameMode: IntOO
     @StateObject var numOne: IntOO
@@ -86,6 +91,17 @@ struct ContentView2: View {
                 }, label:{
                     TextWidget(words: "Addition, subtraction, multiplication, division")
                 })
+                Button(action:{
+                    viewRouter.currentPage = 3
+                    gameMode.num = 4
+                    gameMode.boo = true
+                    digits.num = 1
+                    resetVariables()
+                    startNewGame()
+                    countDown()
+                }, label:{
+                    TextWidget(words: "Challenge Mode - see if you can get high score")
+                })
                 Spacer()
                 Button(action:{
                     digits.num = 1
@@ -94,7 +110,7 @@ struct ContentView2: View {
                     TextWidget(words: "Select difficulty")
                 })
                 Button(action:{
-                    viewRouter.currentPage = 6
+                    viewRouter.currentPage = 7
                 }, label:{
                     TextWidget(words: "View high scores")
                 })
@@ -148,6 +164,12 @@ struct ContentView2: View {
         }
         else if problemType.num == 3 {
             questionChar.words = "/"
+            if digits.num == 1 || digits.num == 2 {
+                numOne.num = Int.random(in: 12...100)
+            }
+            else if digits.num == 3 {
+                numOne.num = Int.random(in: 12..<1000)
+            }
             numTwo.num = Int.random(in: 1...12)
         }
     }
@@ -157,7 +179,23 @@ struct ContentView2: View {
             if seconds.num == 0 {
                 timer.invalidate()
                 accuracy.num2 = Float(correct.num) / Float((correct.num + incorrect.num)) * 100
-                viewRouter.currentPage = 4
+                if gameMode.boo == true {
+                    gameMode.boo = false
+                    if items.indices.contains(5) == true {
+                        if correct.num > items[5].score {
+                            viewRouter.currentPage = 6
+                        }
+                        else {
+                            viewRouter.currentPage = 4
+                        }
+                    }
+                    else {
+                        viewRouter.currentPage = 6
+                    }
+                }
+                else {
+                    viewRouter.currentPage = 4
+                }
             }
             if pause.boo == true {
                 timer.invalidate()
@@ -167,6 +205,11 @@ struct ContentView2: View {
 }
 
 struct ContentView3: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(
+        entity: Player.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Player.score, ascending: false)]
+    )var items: FetchedResults<Player>
     @StateObject var viewRouter: ViewRouter
     @StateObject var gameMode: IntOO
     @ObservedObject var digits: Int2OO
@@ -229,7 +272,23 @@ struct ContentView3: View {
             if seconds.num == 0 {
                 timer.invalidate()
                 accuracy.num2 = Float(correct.num) / Float((correct.num + incorrect.num)) * 100
-                viewRouter.currentPage = 4
+                if gameMode.boo == true {
+                    gameMode.boo = false
+                    if items.indices.contains(5) == true {
+                        if correct.num > items[5].score {
+                            viewRouter.currentPage = 6
+                        }
+                        else {
+                            viewRouter.currentPage = 4
+                        }
+                    }
+                    else {
+                        viewRouter.currentPage = 6
+                    }
+                }
+                else {
+                    viewRouter.currentPage = 4
+                }
             }
             if pause.boo == true {
                 timer.invalidate()
@@ -437,11 +496,25 @@ struct ContentView6: View {
     @ObservedObject var correct: IntOO
     @ObservedObject var incorrect: IntOO
     @ObservedObject var accuracy: IntOO
+    @State var nameString: String = ""
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
             VStack{
-                Text("Hello world")
+                Spacer()
+                Title(words: "Congrats, you got a high score!")
+                TextWidget(words: "Good job, you got a high score of \(correct.num)!")
+                TextWidget(words: "Please enter your name and press OK")
+                TextField("enter your name here", text: $nameString)
+                Button(action:{
+                    let item = Player(context: managedObjectContext)
+                    item.name = nameString
+                    item.score = Int64(correct.num)
+                    viewRouter.currentPage = 2
+                }, label: {
+                    ButtonWidget(words: "OK")
+                })
+                Spacer()
             }
         }
     }
@@ -449,12 +522,51 @@ struct ContentView6: View {
 
 struct ContentView7: View {
     @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(
+        entity: Player.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Player.score, ascending: false)]
+    )var items: FetchedResults<Player>
     @StateObject var viewRouter: ViewRouter
     var body: some View {
         ZStack{
             Background().edgesIgnoringSafeArea([.all])
             VStack{
-                Text("Hello world")
+                Title(words: "High Scores")
+                if items.indices.contains(0) == true {
+                    TextWidget(words: "1. \(items[0].name ?? "blank"), \(items[0].score)")
+                }
+                else{
+                    TextWidget(words: "1. No score yet")
+                }
+                if items.indices.contains(1) == true {
+                    TextWidget(words: "2. \(items[1].name ?? "blank"), \(items[1].score)")
+                }
+                else{
+                    TextWidget(words: "2. No score yet")
+                }
+                if items.indices.contains(2) == true {
+                    TextWidget(words: "3. \(items[2].name ?? "blank"), \(items[2].score)")
+                }
+                else{
+                    TextWidget(words: "3. No score yet")
+                }
+                if items.indices.contains(3) == true {
+                    TextWidget(words: "4. \(items[3].name ?? "blank"), \(items[3].score)")
+                }
+                else{
+                    TextWidget(words: "4. No score yet")
+                }
+                if items.indices.contains(4) == true {
+                    TextWidget(words: "5. \(items[4].name ?? "blank"), \(items[4].score)")
+                }
+                else{
+                    TextWidget(words: "5. No score yet")
+                }
+                Button(action:{
+                    viewRouter.currentPage = 2
+                }, label:{
+                    ButtonWidget(words: "Back")
+                })
             }
         }
     }
